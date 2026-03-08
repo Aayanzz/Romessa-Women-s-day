@@ -123,7 +123,7 @@ h1::after {
 <body>
 
 <!-- Background Music -->
-<audio autoplay loop id="bgMusic">
+<audio autoplay loop id="bgMusic" muted>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -169,17 +169,29 @@ window.onload = () => {
   createHearts(10); // Floating hearts
 };
 
+// Background music
+const bgMusic = document.getElementById('bgMusic');
+bgMusic.volume = 0.3;
+bgMusic.addEventListener('ended', ()=>{ bgMusic.play(); });
+
 // Show Letter and animate
 function showLetter(){
+  // Unmute and play music on first interaction
+  bgMusic.muted = false;
+  bgMusic.play();
+
   const letter = document.getElementById('letter');
   letter.classList.add('show');
 
   // Animate polaroids
   document.querySelectorAll('#letter .polaroid').forEach((el, i)=>{
-    setTimeout(()=>{ el.style.opacity=1; el.style.transform='translateX(0) rotate('+el.style.transform.match(/rotate\(([^)]+)\)/)[1]+')'; }, i*300);
+    setTimeout(()=>{ 
+      el.style.opacity=1; 
+      el.style.transform='translateX(0) rotate('+el.style.transform.match(/rotate\(([^)]+)\)/)[1]+')'; 
+    }, i*300);
   });
 
-  // Start typewriter with your friendly paragraph
+  // Typewriter paragraph
   const textEl = document.getElementById('typewriter');
   const text = `Hi Romessa! 💖
 
@@ -209,11 +221,6 @@ function createHearts(num){
     document.body.appendChild(heart);
   }
 }
-
-// Ensure music never stops
-const bgMusic = document.getElementById('bgMusic');
-bgMusic.volume = 0.3;
-bgMusic.addEventListener('ended', ()=>{ bgMusic.play(); });
 </script>
 
 </body>
